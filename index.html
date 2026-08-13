@@ -64,7 +64,7 @@
   .btn-primary:hover{ background:var(--vinho-dark); }
   .btn-primary:active{ transform:scale(.98); }
 
-  select, input[type="text"], input[type="date"], input[type="color"]{
+  select, input[type="text"], input[type="date"]{
     outline:none;
   }
   select:focus, input:focus{
@@ -97,6 +97,7 @@
 </head>
 <body class="min-h-screen">
 
+<!-- HEADER -->
 <header style="background:var(--vinho);" class="w-full py-6 px-4 shadow-md flex items-center justify-center text-center">
   <h1 class="font-display text-white font-extrabold tracking-wide text-xl sm:text-2xl md:text-3xl">
     PENDÊNCIAS &nbsp;·&nbsp; ORTOMASTER
@@ -105,6 +106,7 @@
 
 <main class="max-w-7xl mx-auto px-3 sm:px-6 py-6">
 
+  <!-- STAT STRIP -->
   <div class="stat-strip flex gap-3 mb-5">
     <div class="flex-1 min-w-[130px] bg-white rounded-xl border" style="border-color:var(--line);" >
       <div class="px-4 py-3">
@@ -132,6 +134,7 @@
     </div>
   </div>
 
+  <!-- TOOLBAR -->
   <div class="bg-white rounded-xl border p-3 sm:p-4 mb-4" style="border-color:var(--line);">
     <div class="flex flex-col lg:flex-row lg:items-center gap-3">
 
@@ -157,3 +160,342 @@
       </div>
 
       <button id="btn-manage" class="rounded-lg px-4 py-2 text-sm flex items-center gap-2 justify-center border font-semibold" style="border-color:var(--line); color:var(--vinho);">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Gerenciar
+      </button>
+
+      <button id="btn-nova" class="btn-primary rounded-lg px-4 py-2 text-sm flex items-center gap-2 justify-center">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Nova Pendência
+      </button>
+    </div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="bg-white rounded-xl border overflow-hidden" style="border-color:var(--line);">
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr>
+            <th class="th-cell">Data</th>
+            <th class="th-cell">Nome</th>
+            <th class="th-cell">Prontuário</th>
+            <th class="th-cell">Dentista</th>
+            <th class="th-cell">Categoria</th>
+            <th class="th-cell">Situação</th>
+            <th class="th-cell text-right">Ações</th>
+          </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+      </table>
+    </div>
+    <div id="empty-state" class="hidden py-14 px-6 text-center">
+      <p class="font-display font-bold text-lg" style="color:var(--ink);">Nenhuma pendência encontrada</p>
+      <p class="text-sm mt-1" style="color:var(--ink-soft);">Ajuste os filtros ou cadastre uma nova pendência para começar.</p>
+    </div>
+  </div>
+
+  <p class="text-xs mt-3" style="color:var(--ink-soft);">
+    Os dados são salvos automaticamente e compartilhados entre quem acessa este painel.
+  </p>
+</main>
+
+<!-- MODAL -->
+<div id="modal" class="fixed inset-0 hidden items-center justify-center modal-backdrop z-50 p-4">
+  <div class="modal-card bg-white rounded-2xl w-full max-w-lg p-6 shadow-2xl">
+    <div class="flex items-center justify-between mb-4">
+      <h2 id="modal-title" class="font-display text-lg font-bold" style="color:var(--vinho);">Nova Pendência</h2>
+      <button id="modal-close" class="icon-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#57514E" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <form id="form" class="space-y-3">
+      <input type="hidden" id="f-id">
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="text-xs font-semibold" style="color:var(--ink-soft);">Data</label>
+          <input required type="date" id="f-data" class="w-full mt-1 py-2 px-3 rounded-lg border text-sm" style="border-color:var(--line);">
+        </div>
+        <div>
+          <label class="text-xs font-semibold" style="color:var(--ink-soft);">Prontuário</label>
+          <input required type="text" id="f-prontuario" placeholder="Ex: 20893" class="w-full mt-1 py-2 px-3 rounded-lg border text-sm" style="border-color:var(--line);">
+        </div>
+      </div>
+
+      <div>
+        <label class="text-xs font-semibold" style="color:var(--ink-soft);">Nome do paciente</label>
+        <input required type="text" id="f-nome" placeholder="Nome completo" class="w-full mt-1 py-2 px-3 rounded-lg border text-sm" style="border-color:var(--line);">
+      </div>
+
+      <div>
+        <label class="text-xs font-semibold" style="color:var(--ink-soft);">Dentista</label>
+        <select id="f-dentista" class="w-full mt-1 py-2 px-3 rounded-lg border text-sm bg-white" style="border-color:var(--line);"></select>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="text-xs font-semibold" style="color:var(--ink-soft);">Categoria</label>
+          <select id="f-categoria" class="w-full mt-1 py-2 px-3 rounded-lg border text-sm bg-white" style="border-color:var(--line);">
+            <option value="Assinatura">Assinatura</option>
+            <option value="Pendência">Pendência</option>
+            <option value="Glosa">Glosa</option>
+            <option value="Termo">Termo</option>
+            <option value="Token">Token</option>
+            <option value="Raio-X">Raio-X</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-xs font-semibold" style="color:var(--ink-soft);">Situação</label>
+          <select id="f-situacao" class="w-full mt-1 py-2 px-3 rounded-lg border text-sm bg-white" style="border-color:var(--line);">
+            <option value="PENDENTE">Pendente</option>
+            <option value="CONCLUÍDO">Concluído</option>
+            <option value="CANCELADO">Cancelado</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="flex gap-2 pt-2">
+        <button type="submit" class="btn-primary rounded-lg px-4 py-2 text-sm flex-1">Salvar</button>
+        <button type="button" id="modal-cancel" class="rounded-lg px-4 py-2 text-sm border font-semibold" style="border-color:var(--line); color:var(--ink-soft);">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'ortomaster-pendencias';
+const DENTISTS_KEY = 'ortomaster-dentistas';
+const DEFAULT_DENTISTS = ['Dra. Giovanna Lacerda', 'Dr. Rafael Nunes', 'Dra. Camila Souza', 'Dr. Eduardo Prado'];
+
+const CATEGORY_COLORS = {
+  'Assinatura': '#6D5FD3',
+  'Pendência': '#D97706',
+  'Glosa': '#D3455B',
+  'Termo': '#1B8A8A',
+  'Token': '#2563EB',
+  'Raio-X': '#5B6470'
+};
+
+let pendencias = [];
+let dentistas = [...DEFAULT_DENTISTS];
+
+const $ = (id) => document.getElementById(id);
+
+async function loadData(){
+  try{
+    const res = await window.storage.get(STORAGE_KEY, true);
+    pendencias = res && res.value ? JSON.parse(res.value) : [];
+  }catch(e){
+    pendencias = [];
+  }
+  try{
+    const res = await window.storage.get(DENTISTS_KEY, true);
+    dentistas = res && res.value ? JSON.parse(res.value) : [...DEFAULT_DENTISTS];
+  }catch(e){
+    dentistas = [...DEFAULT_DENTISTS];
+    try{ await window.storage.set(DENTISTS_KEY, JSON.stringify(dentistas), true); }catch(e2){}
+  }
+}
+
+async function savePendencias(){
+  try{ await window.storage.set(STORAGE_KEY, JSON.stringify(pendencias), true); }
+  catch(e){ console.error('Falha ao salvar pendências', e); }
+}
+
+async function saveDentistas(){
+  try{ await window.storage.set(DENTISTS_KEY, JSON.stringify(dentistas), true); }
+  catch(e){ console.error('Falha ao salvar dentistas', e); }
+}
+
+function fmtDate(iso){
+  if(!iso) return '';
+  const [y,m,d] = iso.split('-');
+  return `${d}/${m}/${y}`;
+}
+
+function situacaoBadge(sit){
+  if(sit === 'PENDENTE') return `<span class="badge badge-pendente">Pendente</span>`;
+  if(sit === 'CONCLUÍDO') return `<span class="badge badge-concluido">Concluído</span>`;
+  return `<span class="badge badge-cancelado">Cancelado</span>`;
+}
+
+function categoriaPill(cat){
+  const color = CATEGORY_COLORS[cat] || '#6B0000';
+  return `<span class="cat-pill"><span class="cat-dot" style="background:${color};"></span>${cat}</span>`;
+}
+
+function populateSelectOptions(){
+  const filterSelect = $('filter-dentista');
+  const formSelect = $('f-dentista');
+  filterSelect.innerHTML = '<option value="">Todos os dentistas</option>';
+  formSelect.innerHTML = '';
+  dentistas.forEach(d => {
+    filterSelect.insertAdjacentHTML('beforeend', `<option value="${d}">${d}</option>`);
+    formSelect.insertAdjacentHTML('beforeend', `<option value="${d}">${d}</option>`);
+  });
+  formSelect.insertAdjacentHTML('beforeend', `<option value="__add__">+ Adicionar novo dentista...</option>`);
+
+  const catSelect = $('filter-categoria');
+  catSelect.innerHTML = '<option value="">Todas as categorias</option>';
+  Object.keys(CATEGORY_COLORS).forEach(c => {
+    catSelect.insertAdjacentHTML('beforeend', `<option value="${c}">${c}</option>`);
+  });
+}
+
+function getFiltered(){
+  const search = $('search').value.trim().toLowerCase();
+  const fDentista = $('filter-dentista').value;
+  const fCategoria = $('filter-categoria').value;
+  const fSituacao = $('filter-situacao').value;
+
+  return pendencias
+    .filter(p => !search || p.nome.toLowerCase().includes(search) || String(p.prontuario).toLowerCase().includes(search))
+    .filter(p => !fDentista || p.dentista === fDentista)
+    .filter(p => !fCategoria || p.categoria === fCategoria)
+    .filter(p => !fSituacao || p.situacao === fSituacao)
+    .sort((a,b) => (b.data || '').localeCompare(a.data || ''));
+}
+
+function renderStats(){
+  $('stat-total').textContent = pendencias.length;
+  $('stat-pendente').textContent = pendencias.filter(p => p.situacao === 'PENDENTE').length;
+  $('stat-concluido').textContent = pendencias.filter(p => p.situacao === 'CONCLUÍDO').length;
+  $('stat-cancelado').textContent = pendencias.filter(p => p.situacao === 'CANCELADO').length;
+}
+
+function render(){
+  const list = getFiltered();
+  const tbody = $('table-body');
+  const empty = $('empty-state');
+
+  if(list.length === 0){
+    tbody.innerHTML = '';
+    empty.classList.remove('hidden');
+  }else{
+    empty.classList.add('hidden');
+    tbody.innerHTML = list.map((p, idx) => `
+      <tr class="row-hover border-t" style="border-color:var(--line); background:${idx % 2 ? '#FCFAF9' : '#FFFFFF'};">
+        <td class="px-4 py-3 whitespace-nowrap">${fmtDate(p.data)}</td>
+        <td class="px-4 py-3 font-medium">${p.nome}</td>
+        <td class="px-4 py-3" style="color:var(--ink-soft);">${p.prontuario}</td>
+        <td class="px-4 py-3">${p.dentista}</td>
+        <td class="px-4 py-3">${categoriaPill(p.categoria)}</td>
+        <td class="px-4 py-3">${situacaoBadge(p.situacao)}</td>
+        <td class="px-4 py-3">
+          <div class="flex items-center justify-end gap-1">
+            <button class="icon-btn edit-btn" data-id="${p.id}" title="Editar">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6B0000" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+            </button>
+            <button class="icon-btn del-btn" data-id="${p.id}" title="Excluir">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#B23B3B" stroke-width="2"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+  renderStats();
+}
+
+function openModal(record){
+  $('form').reset();
+  if(record){
+    $('modal-title').textContent = 'Editar Pendência';
+    $('f-id').value = record.id;
+    $('f-data').value = record.data;
+    $('f-prontuario').value = record.prontuario;
+    $('f-nome').value = record.nome;
+    $('f-dentista').value = record.dentista;
+    $('f-categoria').value = record.categoria;
+    $('f-situacao').value = record.situacao;
+  }else{
+    $('modal-title').textContent = 'Nova Pendência';
+    $('f-id').value = '';
+    $('f-situacao').value = 'PENDENTE';
+    const today = new Date().toISOString().split('T')[0];
+    $('f-data').value = today;
+  }
+  $('modal').classList.remove('hidden');
+  $('modal').classList.add('flex');
+}
+
+function closeModal(){
+  $('modal').classList.add('hidden');
+  $('modal').classList.remove('flex');
+}
+
+$('btn-nova').addEventListener('click', () => openModal(null));
+$('modal-close').addEventListener('click', closeModal);
+$('modal-cancel').addEventListener('click', closeModal);
+$('modal').addEventListener('click', (e) => { if(e.target.id === 'modal') closeModal(); });
+
+$('f-dentista').addEventListener('change', async (e) => {
+  if(e.target.value === '__add__'){
+    const nome = prompt('Nome do novo dentista:');
+    if(nome && nome.trim()){
+      dentistas.push(nome.trim());
+      await saveDentistas();
+      populateSelectOptions();
+      $('f-dentista').value = nome.trim();
+    }else{
+      e.target.value = dentistas[0] || '';
+    }
+  }
+});
+
+$('form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const id = $('f-id').value;
+  const record = {
+    id: id || (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())),
+    data: $('f-data').value,
+    prontuario: $('f-prontuario').value.trim(),
+    nome: $('f-nome').value.trim(),
+    dentista: $('f-dentista').value,
+    categoria: $('f-categoria').value,
+    situacao: $('f-situacao').value
+  };
+
+  if(id){
+    pendencias = pendencias.map(p => p.id === id ? record : p);
+  }else{
+    pendencias.push(record);
+  }
+
+  await savePendencias();
+  closeModal();
+  render();
+});
+
+document.addEventListener('click', async (e) => {
+  const editBtn = e.target.closest('.edit-btn');
+  const delBtn = e.target.closest('.del-btn');
+  if(editBtn){
+    const record = pendencias.find(p => p.id === editBtn.dataset.id);
+    if(record) openModal(record);
+  }
+  if(delBtn){
+    if(confirm('Tem certeza que deseja excluir esta pendência?')){
+      pendencias = pendencias.filter(p => p.id !== delBtn.dataset.id);
+      await savePendencias();
+      render();
+    }
+  }
+});
+
+['search','filter-dentista','filter-categoria','filter-situacao'].forEach(id => {
+  $(id).addEventListener('input', render);
+  $(id).addEventListener('change', render);
+});
+
+(async function init(){
+  await loadData();
+  populateSelectOptions();
+  render();
+})();
+</script>
+
+</body>
+</html>
