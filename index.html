@@ -98,8 +98,8 @@
 <body class="min-h-screen">
 
 <!-- HEADER -->
-<header style="background:var(--vinho);" class="w-full py-6 px-4 shadow-md">
-  <h1 class="font-display text-white text-center font-extrabold tracking-wide text-xl sm:text-2xl md:text-3xl">
+<header style="background:var(--vinho);" class="w-full py-6 px-4 shadow-md flex items-center justify-center text-center">
+  <h1 class="font-display text-white font-extrabold tracking-wide text-xl sm:text-2xl md:text-3xl">
     PENDÊNCIAS &nbsp;·&nbsp; ORTOMASTER
   </h1>
 </header>
@@ -158,6 +158,11 @@
           <option value="CANCELADO">Cancelado</option>
         </select>
       </div>
+
+      <button id="btn-manage" class="rounded-lg px-4 py-2 text-sm flex items-center gap-2 justify-center border font-semibold" style="border-color:var(--line); color:var(--vinho);">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Gerenciar
+      </button>
 
       <button id="btn-nova" class="btn-primary rounded-lg px-4 py-2 text-sm flex items-center gap-2 justify-center">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
