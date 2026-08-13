@@ -1,0 +1,16 @@
+Sistema de Pendências - Ortomaster
+  Sistema web para gestão e acompanhamento de pendências clínicas (assinaturas, termos e documentações).
+
+Funcionalidades
+  Painel com contagem geral e por status (Pendentes, Concluídas, Canceladas).
+
+  Busca rápida por paciente ou prontuário.
+
+  Filtros por dentista, categoria e situação.
+
+  Cadastro e edição de pendências via modal.
+
+  Inclusão de novos dentistas no sistema.
+
+Tecnologias
+  HTML5 / CSS3 / JavaScript
