@@ -23,6 +23,10 @@
     --green-bg: #DEF3E7;
     --gray: #7A7370;
     --gray-bg: #ECE7E4;
+    --brand-blue: #0F2A4A;
+    --brand-blue-light: #1F5A96;
+    --brand-red: #E4002B;
+    --brand-red-dark: #B4001F;
   }
   *{box-sizing:border-box;}
   body{
@@ -64,7 +68,7 @@
   .btn-primary:hover{ background:var(--vinho-dark); }
   .btn-primary:active{ transform:scale(.98); }
 
-  select, input[type="text"], input[type="date"]{
+  select, input[type="text"], input[type="date"], input[type="password"]{
     outline:none;
   }
   select:focus, input:focus{
@@ -93,21 +97,262 @@
   @media (max-width: 720px){
     .stat-strip{ flex-wrap:wrap; }
   }
+
+  /* ===== BRAND GRADIENT (header + login) ===== */
+  .auth-bg{
+    background:
+      radial-gradient(900px 500px at 15% -10%, var(--brand-blue-light) 0%, transparent 55%),
+      radial-gradient(700px 420px at 90% 100%, #2E6FAE 0%, transparent 50%),
+      linear-gradient(150deg, #0B2038 0%, var(--brand-blue) 45%, #081A2E 100%);
+  }
+
+  /* ===== HERO HEADER ===== */
+  .hero-header{
+    position:relative;
+    overflow:hidden;
+    background:
+      radial-gradient(900px 500px at 12% -15%, var(--brand-blue-light) 0%, transparent 55%),
+      radial-gradient(700px 420px at 92% 10%, #2E6FAE 0%, transparent 50%),
+      linear-gradient(150deg, #0B2038 0%, var(--brand-blue) 45%, #081A2E 100%);
+  }
+  #hero-bg-image{
+    position:absolute; inset:0; z-index:0;
+    background-size:cover; background-position:center;
+  }
+  .hero-header::before{
+    /* soft-focus vector ambience layered over the header image (or gradient fallback) */
+    content:'';
+    position:absolute; inset:0; z-index:1;
+    background-image:
+      radial-gradient(circle at 78% 30%, rgba(255,255,255,.10) 0%, transparent 38%),
+      radial-gradient(circle at 60% 70%, rgba(255,255,255,.06) 0%, transparent 45%),
+      radial-gradient(circle at 30% 85%, rgba(228,0,43,.14) 0%, transparent 42%);
+    filter:blur(6px);
+    opacity:.9;
+  }
+  .hero-header::after{
+    content:'';
+    position:absolute; inset:0; z-index:2;
+    background:linear-gradient(180deg, rgba(8,20,36,.15) 0%, rgba(8,20,36,.55) 100%);
+  }
+  .hero-inner{ position:relative; z-index:3; }
+
+  .hamburger-btn{
+    display:flex; flex-direction:column; justify-content:center; gap:5px;
+    width:2.4rem; height:2.4rem; padding:.5rem;
+    background:transparent; border:none; cursor:pointer; flex:none;
+  }
+  .hamburger-btn span{ width:100%; height:2px; background:#fff; border-radius:2px; display:block; }
+
+  .om-logo{
+    width:2.5rem; height:2.9rem; flex:none;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--brand-red); color:#fff;
+    font-family:'Sora',sans-serif; font-weight:800; font-size:1.05rem;
+    border-radius:.3rem; box-shadow:0 2px 8px rgba(0,0,0,.3);
+  }
+
+  .nav-link{
+    color:#fff; font-weight:700; font-size:.78rem; letter-spacing:.05em;
+    text-decoration:none; padding-bottom:.3rem; border-bottom:2px solid transparent;
+    opacity:.85; transition:opacity .15s ease, border-color .15s ease;
+    background:none; cursor:pointer;
+  }
+  .nav-link:hover{ opacity:1; }
+  .nav-link.active{ opacity:1; border-bottom-color:var(--brand-red); }
+
+  .user-avatar{
+    width:2.4rem; height:2.4rem; border-radius:999px; flex:none;
+    background:var(--brand-red); border:2px solid rgba(255,255,255,.5);
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
+  }
+
+  .hero-headline{
+    color:#fff; font-weight:800; text-transform:uppercase; letter-spacing:.02em;
+    font-size:clamp(1.4rem, 4vw, 2.6rem); line-height:1.25;
+    text-shadow:0 3px 16px rgba(0,0,0,.35);
+  }
+
+  .hero-search{
+    display:flex; align-items:stretch; background:#fff; border-radius:999px;
+    overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,.28);
+  }
+  .hero-search input{
+    flex:1; min-width:0; border:none; background:transparent; outline:none;
+    padding:.95rem 1.5rem; color:var(--brand-red); font-weight:700;
+    font-size:.78rem; letter-spacing:.04em; text-transform:uppercase;
+  }
+  .hero-search input::placeholder{ color:var(--brand-red); opacity:.9; }
+  .hero-search button{
+    background:var(--brand-red); border:none; width:3.4rem; flex:none;
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
+    transition:background .15s ease;
+  }
+  .hero-search button:hover{ background:var(--brand-red-dark); }
+
+  /* ===== SIDEBAR DRAWER ===== */
+  #sidebar-drawer{ transition:transform .2s ease; }
+  .drawer-link{
+    display:block; width:100%; text-align:left; padding:.65rem .8rem;
+    border-radius:.6rem; font-size:.85rem; font-weight:600; color:var(--ink);
+    text-decoration:none; background:none; border:none; cursor:pointer;
+    transition:background .15s ease;
+  }
+  .drawer-link:hover{ background:var(--bg); }
+
+  /* ===== AUTH TABS ===== */
+  .auth-tab{
+    flex:1; padding:.55rem 0; font-size:.82rem; font-weight:700; text-align:center;
+    background:transparent; color:var(--ink-soft); border:none; cursor:pointer;
+    transition:background .15s ease, color .15s ease;
+  }
+  .auth-tab.active{ background:var(--vinho); color:#fff; }
 </style>
 </head>
 <body class="min-h-screen">
 
-<!-- HEADER -->
-<header style="background:var(--vinho);" class="w-full py-6 px-4 shadow-md flex items-center justify-center text-center">
-  <h1 class="font-display text-white font-extrabold tracking-wide text-xl sm:text-2xl md:text-3xl">
-    PENDÊNCIAS &nbsp;·&nbsp; ORTOMASTER
-  </h1>
+<!-- ===================== AUTH SCREEN ===================== -->
+<div id="auth-screen" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 auth-bg">
+  <div class="w-full max-w-sm bg-white rounded-2xl shadow-2xl p-7">
+    <div class="flex flex-col items-center mb-5">
+      <div class="om-logo mb-3" style="width:3rem;height:3.4rem;font-size:1.3rem;">OM</div>
+      <h1 class="font-display font-extrabold text-lg" style="color:var(--vinho);">ORTOMASTER</h1>
+      <p class="text-xs" style="color:var(--ink-soft);">Painel de Pendências</p>
+    </div>
+
+    <div class="flex mb-5 rounded-lg overflow-hidden border" style="border-color:var(--line);">
+      <button id="tab-login" type="button" class="auth-tab active">Entrar</button>
+      <button id="tab-register" type="button" class="auth-tab">Criar conta</button>
+    </div>
+
+    <form id="login-form" class="space-y-3">
+      <div>
+        <label class="text-xs font-semibold" style="color:var(--ink-soft);">Usuário</label>
+        <input required id="login-usuario" type="text" autocomplete="username" class="w-full mt-1 py-2 px-3 rounded-lg border text-sm" style="border-color:var(--line);">
+      </div>
+      <div>
+        <label class="text-xs font-semibold" style="color:var(--ink-soft);">Senha</label>
+        <input required id="login-senha" type="password" autocomplete="current-password" class="w-full mt-1 py-2 px-3 rounded-lg border text-sm" style="border-color:var(--line);">
+      </div>
+      <p id="login-error" class="text-xs hidden" style="color:#B23B3B;"></p>
+      <button type="submit" class="btn-primary rounded-lg px-4 py-2 text-sm w-full">Entrar</button>
+      <p class="text-[.7rem] text-center pt-1" style="color:var(--ink-soft);">Usuário padrão: <b>admin</b> · Senha: <b>admin123</b></p>
+    </form>
+
+    <form id="register-form" class="space-y-3 hidden">
+      <div>
+        <label class="text-xs font-semibold" style="color:var(--ink-soft);">Nome completo</label>
+        <input required id="reg-nome" type="text" class="w-full mt-1 py-2 px-3 rounded-lg border text-sm" style="border-color:var(--line);">
+      </div>
+      <div>
+        <label class="text-xs font-semibold" style="color:var(--ink-soft);">Usuário</label>
+        <input required id="reg-usuario" type="text" autocomplete="username" class="w-full mt-1 py-2 px-3 rounded-lg border text-sm" style="border-color:var(--line);">
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="text-xs font-semibold" style="color:var(--ink-soft);">Senha</label>
+          <input required id="reg-senha" type="password" autocomplete="new-password" class="w-full mt-1 py-2 px-3 rounded-lg border text-sm" style="border-color:var(--line);">
+        </div>
+        <div>
+          <label class="text-xs font-semibold" style="color:var(--ink-soft);">Confirmar</label>
+          <input required id="reg-confirmar" type="password" autocomplete="new-password" class="w-full mt-1 py-2 px-3 rounded-lg border text-sm" style="border-color:var(--line);">
+        </div>
+      </div>
+      <p id="register-error" class="text-xs hidden" style="color:#B23B3B;"></p>
+      <button type="submit" class="btn-primary rounded-lg px-4 py-2 text-sm w-full">Criar conta e entrar</button>
+    </form>
+  </div>
+</div>
+
+<!-- ===================== APP ===================== -->
+<div id="app-root" class="hidden">
+
+<!-- SIDEBAR DRAWER -->
+<div id="sidebar-overlay" class="fixed inset-0 bg-black/40 z-[90] hidden"></div>
+<aside id="sidebar-drawer" class="fixed top-0 left-0 h-full w-72 bg-white z-[95] shadow-2xl -translate-x-full flex flex-col">
+  <div class="flex items-center justify-between px-4 py-4 border-b" style="border-color:var(--line);">
+    <div class="flex items-center gap-2">
+      <div class="om-logo" style="width:2rem;height:2.3rem;font-size:.85rem;">om</div>
+      <span class="font-display font-bold text-sm" style="color:var(--vinho);">Menu</span>
+    </div>
+    <button id="drawer-close" class="icon-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#57514E" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+
+  <div class="px-4 py-3 border-b" style="border-color:var(--line);">
+    <p id="drawer-nome" class="text-sm font-bold" style="color:var(--ink);"></p>
+    <p id="drawer-usuario" class="text-xs" style="color:var(--ink-soft);"></p>
+  </div>
+
+  <nav class="px-2 py-2 flex flex-col gap-1 border-b" style="border-color:var(--line);">
+    <a href="#table-section" class="drawer-link" data-close="true">Pendências</a>
+    <a href="#stats-section" class="drawer-link" data-close="true">Controle</a>
+    <button id="drawer-gerenciamento" class="drawer-link">Gerenciamento</button>
+  </nav>
+
+  <div class="px-4 py-3 border-b" style="border-color:var(--line);">
+    <p class="text-xs font-bold uppercase tracking-wide mb-2" style="color:var(--ink-soft);">Aparência do cabeçalho</p>
+    <button id="drawer-change-img" class="w-full text-left text-sm px-3 py-2 rounded-lg border mb-2 font-medium" style="border-color:var(--line); color:var(--ink);">Alterar imagem de fundo</button>
+    <button id="drawer-restore-img" class="w-full text-left text-sm px-3 py-2 rounded-lg border font-medium" style="border-color:var(--line); color:var(--ink-soft);">Restaurar padrão</button>
+    <input type="file" id="header-img-input" accept="image/*" class="hidden">
+  </div>
+
+  <div class="mt-auto px-4 py-4">
+    <button id="drawer-logout" class="w-full text-left text-sm px-3 py-2 rounded-lg font-semibold" style="color:#B23B3B;">Sair</button>
+  </div>
+</aside>
+
+<!-- HERO HEADER -->
+<header class="hero-header w-full">
+  <div id="hero-bg-image"></div>
+  <div class="hero-inner max-w-7xl mx-auto px-4 sm:px-6">
+
+    <nav class="flex items-center justify-between py-4">
+      <div class="flex items-center gap-3 flex-wrap">
+        <button id="hamburger-btn" class="hamburger-btn" aria-label="Abrir menu">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="om-logo">om</div>
+        <div id="nav-links" class="hidden md:flex items-center gap-6 ml-2">
+          <a href="#table-section" id="nav-pendencias" class="nav-link active">PENDÊNCIAS</a>
+          <a href="#stats-section" id="nav-controle" class="nav-link">CONTROLE</a>
+          <a href="#" id="nav-gerenciamento" class="nav-link">GERENCIAMENTO</a>
+        </div>
+      </div>
+
+      <div class="relative">
+        <button id="avatar-btn" class="user-avatar" aria-label="Perfil do usuário">
+          <span id="avatar-initials" class="text-white font-bold text-xs"></span>
+        </button>
+        <div id="avatar-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-2xl border p-2 z-50" style="border-color:var(--line);">
+          <p id="avatar-name" class="text-sm font-semibold px-2 py-1.5" style="color:var(--ink);"></p>
+          <p id="avatar-usuario" class="text-xs px-2 pb-1.5" style="color:var(--ink-soft);"></p>
+          <hr class="my-1" style="border-color:var(--line);">
+          <button id="logout-btn" class="w-full text-left text-sm px-2 py-1.5 rounded hover:bg-gray-50 font-semibold" style="color:#B23B3B;">Sair</button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="text-center pt-4 pb-7 md:pt-8 md:pb-9 px-2">
+      <h2 class="hero-headline font-display">TECNOLOGIA E CONFORTO<br>PARA O SEU SORRISO.</h2>
+    </div>
+
+    <div class="max-w-2xl mx-auto pb-10 md:pb-14">
+      <div class="hero-search">
+        <input id="search" type="text" placeholder="Buscar por nome ou prontuário">
+        <button id="hero-search-btn" aria-label="Buscar">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
 </header>
 
 <main class="max-w-7xl mx-auto px-3 sm:px-6 py-6">
 
   <!-- STAT STRIP -->
-  <div class="stat-strip flex gap-3 mb-5">
+  <div id="stats-section" class="stat-strip flex gap-3 mb-5 scroll-mt-6">
     <div class="flex-1 min-w-[130px] bg-white rounded-xl border" style="border-color:var(--line);" >
       <div class="px-4 py-3">
         <p class="text-[.7rem] uppercase tracking-wide font-semibold" style="color:var(--ink-soft);">Total</p>
@@ -138,13 +383,7 @@
   <div class="bg-white rounded-xl border p-3 sm:p-4 mb-4" style="border-color:var(--line);">
     <div class="flex flex-col lg:flex-row lg:items-center gap-3">
 
-      <div class="relative flex-1 min-w-[200px]">
-        <svg class="absolute left-3 top-1/2 -translate-y-1/2" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9A8C86" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input id="search" type="text" placeholder="Buscar por nome ou prontuário..."
-          class="w-full pl-9 pr-3 py-2 rounded-lg border text-sm" style="border-color:var(--line);">
-      </div>
-
-      <div class="flex flex-wrap gap-2">
+      <div class="flex flex-wrap gap-2 flex-1">
         <select id="filter-dentista" class="py-2 px-3 rounded-lg border text-sm bg-white" style="border-color:var(--line);">
           <option value="">Todos os dentistas</option>
         </select>
@@ -172,7 +411,7 @@
   </div>
 
   <!-- TABLE -->
-  <div class="bg-white rounded-xl border overflow-hidden" style="border-color:var(--line);">
+  <div id="table-section" class="bg-white rounded-xl border overflow-hidden scroll-mt-6" style="border-color:var(--line);">
     <div class="overflow-x-auto">
       <table class="w-full text-sm">
         <thead>
@@ -200,7 +439,7 @@
   </p>
 </main>
 
-<!-- MODAL -->
+<!-- MODAL: NOVA / EDITAR PENDÊNCIA -->
 <div id="modal" class="fixed inset-0 hidden items-center justify-center modal-backdrop z-50 p-4">
   <div class="modal-card bg-white rounded-2xl w-full max-w-lg p-6 shadow-2xl">
     <div class="flex items-center justify-between mb-4">
@@ -231,20 +470,13 @@
 
       <div>
         <label class="text-xs font-semibold" style="color:var(--ink-soft);">Dentista</label>
-        <select id="f-dentista" class="w-full mt-1 py-2 px-3 rounded-lg border text-sm bg-white" style="border-color:var(--line);"></select>
+        <select required id="f-dentista" class="w-full mt-1 py-2 px-3 rounded-lg border text-sm bg-white" style="border-color:var(--line);"></select>
       </div>
 
       <div class="grid grid-cols-2 gap-3">
         <div>
           <label class="text-xs font-semibold" style="color:var(--ink-soft);">Categoria</label>
-          <select id="f-categoria" class="w-full mt-1 py-2 px-3 rounded-lg border text-sm bg-white" style="border-color:var(--line);">
-            <option value="Assinatura">Assinatura</option>
-            <option value="Pendência">Pendência</option>
-            <option value="Glosa">Glosa</option>
-            <option value="Termo">Termo</option>
-            <option value="Token">Token</option>
-            <option value="Raio-X">Raio-X</option>
-          </select>
+          <select required id="f-categoria" class="w-full mt-1 py-2 px-3 rounded-lg border text-sm bg-white" style="border-color:var(--line);"></select>
         </div>
         <div>
           <label class="text-xs font-semibold" style="color:var(--ink-soft);">Situação</label>
@@ -264,25 +496,161 @@
   </div>
 </div>
 
+<!-- MODAL: GERENCIAR DENTISTAS E CATEGORIAS -->
+<div id="manage-modal" class="fixed inset-0 hidden items-center justify-center modal-backdrop z-50 p-4">
+  <div class="modal-card bg-white rounded-2xl w-full max-w-2xl p-6 shadow-2xl max-h-[85vh] overflow-y-auto">
+    <div class="flex items-center justify-between mb-5">
+      <h2 class="font-display text-lg font-bold" style="color:var(--vinho);">Gerenciar Cadastros</h2>
+      <button id="manage-close" class="icon-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#57514E" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="grid sm:grid-cols-2 gap-6">
+      <div>
+        <h3 class="text-xs font-bold uppercase tracking-wide mb-2" style="color:var(--ink-soft);">Dentistas</h3>
+        <div class="flex gap-2 mb-3">
+          <input id="new-dentista" type="text" placeholder="Nome do dentista" class="flex-1 py-2 px-3 rounded-lg border text-sm" style="border-color:var(--line);">
+          <button id="add-dentista" class="btn-primary rounded-lg px-3 text-sm font-semibold">Adicionar</button>
+        </div>
+        <ul id="lista-dentistas" class="space-y-1.5"></ul>
+      </div>
+
+      <div>
+        <h3 class="text-xs font-bold uppercase tracking-wide mb-2" style="color:var(--ink-soft);">Categorias</h3>
+        <div class="flex gap-2 mb-3">
+          <input id="new-categoria" type="text" placeholder="Nome da categoria" class="flex-1 py-2 px-3 rounded-lg border text-sm" style="border-color:var(--line);">
+          <button id="add-categoria" class="btn-primary rounded-lg px-3 text-sm font-semibold">Adicionar</button>
+        </div>
+        <ul id="lista-categorias" class="space-y-1.5"></ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div> <!-- /app-root -->
+
 <script>
+// ===================== CHAVES DE ARMAZENAMENTO =====================
 const STORAGE_KEY = 'ortomaster-pendencias';
 const DENTISTS_KEY = 'ortomaster-dentistas';
+const CATEGORIES_KEY = 'ortomaster-categorias';
+const USERS_KEY = 'ortomaster-usuarios';
+const SESSION_KEY = 'ortomaster-sessao';
+const HEADER_IMG_KEY = 'ortomaster-header-img';
+
 const DEFAULT_DENTISTS = ['Dra. Giovanna Lacerda', 'Dr. Rafael Nunes', 'Dra. Camila Souza', 'Dr. Eduardo Prado'];
 
-const CATEGORY_COLORS = {
-  'Assinatura': '#6D5FD3',
-  'Pendência': '#D97706',
-  'Glosa': '#D3455B',
-  'Termo': '#1B8A8A',
-  'Token': '#2563EB',
-  'Raio-X': '#5B6470'
-};
+const DEFAULT_CATEGORIES = [
+  { name: 'Assinatura', color: '#6D5FD3' },
+  { name: 'Pendência',  color: '#D97706' },
+  { name: 'Glosa',      color: '#D3455B' },
+  { name: 'Termo',      color: '#1B8A8A' },
+  { name: 'Token',      color: '#2563EB' },
+  { name: 'Raio-X',     color: '#5B6470' }
+];
+
+const CATEGORY_PALETTE = ['#6D5FD3','#D97706','#D3455B','#1B8A8A','#2563EB','#5B6470','#0EA5A5','#DB2777','#65A30D','#8B5E34','#C2410C','#4338CA'];
 
 let pendencias = [];
 let dentistas = [...DEFAULT_DENTISTS];
+let categorias = DEFAULT_CATEGORIES.map(c => ({...c}));
+let usuarios = [];
+let currentUser = null;
+let headerImageDataUrl = null;
 
 const $ = (id) => document.getElementById(id);
 
+// ===================== AUTENTICAÇÃO =====================
+async function hashPassword(str){
+  const enc = new TextEncoder().encode(str);
+  const buf = await crypto.subtle.digest('SHA-256', enc);
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+async function loadUsuarios(){
+  try{
+    const res = await window.storage.get(USERS_KEY, true);
+    usuarios = res && res.value ? JSON.parse(res.value) : [];
+  }catch(e){
+    usuarios = [];
+  }
+  if(usuarios.length === 0){
+    const hash = await hashPassword('admin123');
+    usuarios = [{
+      id: (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())),
+      nome: 'Administrador',
+      usuario: 'admin',
+      senhaHash: hash,
+      criadoEm: new Date().toISOString()
+    }];
+    try{ await window.storage.set(USERS_KEY, JSON.stringify(usuarios), true); }catch(e){}
+  }
+}
+async function saveUsuarios(){
+  try{ await window.storage.set(USERS_KEY, JSON.stringify(usuarios), true); }
+  catch(e){ console.error('Falha ao salvar usuários', e); }
+}
+
+async function getSession(){
+  try{
+    const res = await window.storage.get(SESSION_KEY, false);
+    return res && res.value ? JSON.parse(res.value) : null;
+  }catch(e){ return null; }
+}
+async function setSession(usuario){
+  try{ await window.storage.set(SESSION_KEY, JSON.stringify({ usuario }), false); }catch(e){}
+}
+async function clearSession(){
+  try{ await window.storage.delete(SESSION_KEY, false); }catch(e){}
+}
+
+async function tentarLogin(usuario, senha){
+  const hash = await hashPassword(senha);
+  return usuarios.find(u => u.usuario.toLowerCase() === usuario.toLowerCase() && u.senhaHash === hash) || null;
+}
+
+function getInitials(nome){
+  return nome.trim().split(/\s+/).map(p => p[0]).slice(0,2).join('').toUpperCase();
+}
+
+function showRegError(msg){
+  $('register-error').textContent = msg;
+  $('register-error').classList.remove('hidden');
+}
+
+function switchTab(which){
+  const loginActive = which === 'login';
+  $('login-form').classList.toggle('hidden', !loginActive);
+  $('register-form').classList.toggle('hidden', loginActive);
+  $('tab-login').classList.toggle('active', loginActive);
+  $('tab-register').classList.toggle('active', !loginActive);
+}
+
+function showAuth(){
+  $('app-root').classList.add('hidden');
+  $('auth-screen').classList.remove('hidden');
+  $('auth-screen').classList.add('flex');
+}
+
+async function enterApp(){
+  $('auth-screen').classList.add('hidden');
+  $('auth-screen').classList.remove('flex');
+  $('app-root').classList.remove('hidden');
+
+  $('avatar-initials').textContent = getInitials(currentUser.nome);
+  $('avatar-name').textContent = currentUser.nome;
+  $('avatar-usuario').textContent = '@' + currentUser.usuario;
+  $('drawer-nome').textContent = currentUser.nome;
+  $('drawer-usuario').textContent = '@' + currentUser.usuario;
+
+  await loadData();
+  populateSelectOptions();
+  applyHeaderImage(headerImageDataUrl);
+  render();
+}
+
+// ===================== DADOS DA CLÍNICA =====================
 async function loadData(){
   try{
     const res = await window.storage.get(STORAGE_KEY, true);
@@ -297,16 +665,32 @@ async function loadData(){
     dentistas = [...DEFAULT_DENTISTS];
     try{ await window.storage.set(DENTISTS_KEY, JSON.stringify(dentistas), true); }catch(e2){}
   }
+  try{
+    const res = await window.storage.get(CATEGORIES_KEY, true);
+    categorias = res && res.value ? JSON.parse(res.value) : DEFAULT_CATEGORIES.map(c => ({...c}));
+  }catch(e){
+    categorias = DEFAULT_CATEGORIES.map(c => ({...c}));
+    try{ await window.storage.set(CATEGORIES_KEY, JSON.stringify(categorias), true); }catch(e2){}
+  }
+  try{
+    const res = await window.storage.get(HEADER_IMG_KEY, true);
+    headerImageDataUrl = res && res.value ? res.value : null;
+  }catch(e){
+    headerImageDataUrl = null;
+  }
 }
 
 async function savePendencias(){
   try{ await window.storage.set(STORAGE_KEY, JSON.stringify(pendencias), true); }
   catch(e){ console.error('Falha ao salvar pendências', e); }
 }
-
 async function saveDentistas(){
   try{ await window.storage.set(DENTISTS_KEY, JSON.stringify(dentistas), true); }
   catch(e){ console.error('Falha ao salvar dentistas', e); }
+}
+async function saveCategorias(){
+  try{ await window.storage.set(CATEGORIES_KEY, JSON.stringify(categorias), true); }
+  catch(e){ console.error('Falha ao salvar categorias', e); }
 }
 
 function fmtDate(iso){
@@ -322,26 +706,37 @@ function situacaoBadge(sit){
 }
 
 function categoriaPill(cat){
-  const color = CATEGORY_COLORS[cat] || '#6B0000';
+  const found = categorias.find(c => c.name === cat);
+  const color = found ? found.color : '#6B0000';
   return `<span class="cat-pill"><span class="cat-dot" style="background:${color};"></span>${cat}</span>`;
 }
 
 function populateSelectOptions(){
-  const filterSelect = $('filter-dentista');
-  const formSelect = $('f-dentista');
-  filterSelect.innerHTML = '<option value="">Todos os dentistas</option>';
-  formSelect.innerHTML = '';
+  const filterDentista = $('filter-dentista');
+  const formDentista = $('f-dentista');
+  const prevFilterDentista = filterDentista.value;
+  const prevFormDentista = formDentista.value;
+  filterDentista.innerHTML = '<option value="">Todos os dentistas</option>';
+  formDentista.innerHTML = '';
   dentistas.forEach(d => {
-    filterSelect.insertAdjacentHTML('beforeend', `<option value="${d}">${d}</option>`);
-    formSelect.insertAdjacentHTML('beforeend', `<option value="${d}">${d}</option>`);
+    filterDentista.insertAdjacentHTML('beforeend', `<option value="${d}">${d}</option>`);
+    formDentista.insertAdjacentHTML('beforeend', `<option value="${d}">${d}</option>`);
   });
-  formSelect.insertAdjacentHTML('beforeend', `<option value="__add__">+ Adicionar novo dentista...</option>`);
+  filterDentista.value = dentistas.includes(prevFilterDentista) ? prevFilterDentista : '';
+  if(dentistas.includes(prevFormDentista)) formDentista.value = prevFormDentista;
 
-  const catSelect = $('filter-categoria');
-  catSelect.innerHTML = '<option value="">Todas as categorias</option>';
-  Object.keys(CATEGORY_COLORS).forEach(c => {
-    catSelect.insertAdjacentHTML('beforeend', `<option value="${c}">${c}</option>`);
+  const filterCategoria = $('filter-categoria');
+  const formCategoria = $('f-categoria');
+  const prevFilterCategoria = filterCategoria.value;
+  const prevFormCategoria = formCategoria.value;
+  filterCategoria.innerHTML = '<option value="">Todas as categorias</option>';
+  formCategoria.innerHTML = '';
+  categorias.forEach(c => {
+    filterCategoria.insertAdjacentHTML('beforeend', `<option value="${c.name}">${c.name}</option>`);
+    formCategoria.insertAdjacentHTML('beforeend', `<option value="${c.name}">${c.name}</option>`);
   });
+  filterCategoria.value = categorias.some(c => c.name === prevFilterCategoria) ? prevFilterCategoria : '';
+  if(categorias.some(c => c.name === prevFormCategoria)) formCategoria.value = prevFormCategoria;
 }
 
 function getFiltered(){
@@ -420,29 +815,272 @@ function openModal(record){
   $('modal').classList.remove('hidden');
   $('modal').classList.add('flex');
 }
-
 function closeModal(){
   $('modal').classList.add('hidden');
   $('modal').classList.remove('flex');
 }
 
+function renderManageLists(){
+  const listaDentistas = $('lista-dentistas');
+  listaDentistas.innerHTML = dentistas.map(nome => `
+    <li class="flex items-center justify-between px-3 py-2 rounded-lg border text-sm" style="border-color:var(--line);">
+      <span>${nome}</span>
+      <button class="icon-btn remove-dentista" data-name="${nome}" title="Remover dentista">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B23B3B" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </li>
+  `).join('') || `<li class="text-sm px-1" style="color:var(--ink-soft);">Nenhum dentista cadastrado.</li>`;
+
+  const listaCategorias = $('lista-categorias');
+  listaCategorias.innerHTML = categorias.map(c => `
+    <li class="flex items-center justify-between px-3 py-2 rounded-lg border text-sm" style="border-color:var(--line);">
+      <span class="flex items-center gap-2"><span class="cat-dot" style="background:${c.color};"></span>${c.name}</span>
+      <button class="icon-btn remove-categoria" data-name="${c.name}" title="Remover categoria">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B23B3B" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </li>
+  `).join('') || `<li class="text-sm px-1" style="color:var(--ink-soft);">Nenhuma categoria cadastrada.</li>`;
+}
+
+function openManageModal(){
+  renderManageLists();
+  $('manage-modal').classList.remove('hidden');
+  $('manage-modal').classList.add('flex');
+}
+function closeManageModal(){
+  $('manage-modal').classList.add('hidden');
+  $('manage-modal').classList.remove('flex');
+}
+
+async function handleAddDentista(){
+  const input = $('new-dentista');
+  const nome = input.value.trim();
+  if(!nome) return;
+  if(dentistas.some(d => d.toLowerCase() === nome.toLowerCase())){
+    alert('Este dentista já está cadastrado.');
+    return;
+  }
+  dentistas.push(nome);
+  await saveDentistas();
+  populateSelectOptions();
+  renderManageLists();
+  input.value = '';
+  input.focus();
+}
+
+async function handleAddCategoria(){
+  const input = $('new-categoria');
+  const nome = input.value.trim();
+  if(!nome) return;
+  if(categorias.some(c => c.name.toLowerCase() === nome.toLowerCase())){
+    alert('Esta categoria já está cadastrada.');
+    return;
+  }
+  const color = CATEGORY_PALETTE[categorias.length % CATEGORY_PALETTE.length];
+  categorias.push({ name: nome, color });
+  await saveCategorias();
+  populateSelectOptions();
+  renderManageLists();
+  input.value = '';
+  input.focus();
+}
+
+async function handleRemoveDentista(nome){
+  if(!confirm(`Remover "${nome}"? Pendências já cadastradas com este dentista continuarão exibindo o nome, mas ele deixará de aparecer nas opções de novos cadastros.`)) return;
+  dentistas = dentistas.filter(d => d !== nome);
+  await saveDentistas();
+  populateSelectOptions();
+  renderManageLists();
+  render();
+}
+
+async function handleRemoveCategoria(nome){
+  if(!confirm(`Remover a categoria "${nome}"? Pendências já cadastradas com esta categoria continuarão exibindo o nome, mas ela deixará de aparecer nas opções de novos cadastros.`)) return;
+  categorias = categorias.filter(c => c.name !== nome);
+  await saveCategorias();
+  populateSelectOptions();
+  renderManageLists();
+  render();
+}
+
+// ===================== IMAGEM DO CABEÇALHO =====================
+function applyHeaderImage(dataUrl){
+  const el = $('hero-bg-image');
+  el.style.backgroundImage = dataUrl ? `url(${dataUrl})` : '';
+}
+
+function resizeImageToDataUrl(file, maxWidth, quality){
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        let { width, height } = img;
+        if(width > maxWidth){
+          height = Math.round(height * (maxWidth / width));
+          width = maxWidth;
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      };
+      img.onerror = reject;
+      img.src = reader.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+async function handleHeaderImageChange(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  try{
+    const dataUrl = await resizeImageToDataUrl(file, 1600, 0.82);
+    applyHeaderImage(dataUrl);
+    headerImageDataUrl = dataUrl;
+    await window.storage.set(HEADER_IMG_KEY, dataUrl, true);
+  }catch(err){
+    alert('Não foi possível usar esta imagem. Tente um arquivo JPG ou PNG menor.');
+  }
+  e.target.value = '';
+  closeDrawer();
+}
+
+async function handleRestoreHeaderImage(){
+  applyHeaderImage(null);
+  headerImageDataUrl = null;
+  try{ await window.storage.delete(HEADER_IMG_KEY, true); }catch(e){}
+  closeDrawer();
+}
+
+// ===================== SIDEBAR DRAWER =====================
+function openDrawer(){
+  $('sidebar-drawer').classList.remove('-translate-x-full');
+  $('sidebar-overlay').classList.remove('hidden');
+}
+function closeDrawer(){
+  $('sidebar-drawer').classList.add('-translate-x-full');
+  $('sidebar-overlay').classList.add('hidden');
+}
+
+// ===================== EVENTOS: AUTENTICAÇÃO =====================
+$('tab-login').addEventListener('click', () => switchTab('login'));
+$('tab-register').addEventListener('click', () => switchTab('register'));
+
+$('login-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  $('login-error').classList.add('hidden');
+  const usuario = $('login-usuario').value.trim();
+  const senha = $('login-senha').value;
+  const user = await tentarLogin(usuario, senha);
+  if(!user){
+    $('login-error').textContent = 'Usuário ou senha inválidos.';
+    $('login-error').classList.remove('hidden');
+    return;
+  }
+  currentUser = user;
+  await setSession(user.usuario);
+  $('login-form').reset();
+  await enterApp();
+});
+
+$('register-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  $('register-error').classList.add('hidden');
+  const nome = $('reg-nome').value.trim();
+  const usuario = $('reg-usuario').value.trim();
+  const senha = $('reg-senha').value;
+  const confirmar = $('reg-confirmar').value;
+
+  if(!nome || !usuario || !senha){ showRegError('Preencha todos os campos.'); return; }
+  if(senha.length < 4){ showRegError('A senha deve ter ao menos 4 caracteres.'); return; }
+  if(senha !== confirmar){ showRegError('As senhas não coincidem.'); return; }
+  if(usuarios.some(u => u.usuario.toLowerCase() === usuario.toLowerCase())){ showRegError('Este usuário já existe.'); return; }
+
+  const hash = await hashPassword(senha);
+  const novo = {
+    id: (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())),
+    nome, usuario, senhaHash: hash, criadoEm: new Date().toISOString()
+  };
+  usuarios.push(novo);
+  await saveUsuarios();
+  currentUser = novo;
+  await setSession(novo.usuario);
+  $('register-form').reset();
+  await enterApp();
+});
+
+async function doLogout(){
+  await clearSession();
+  currentUser = null;
+  $('avatar-dropdown').classList.add('hidden');
+  closeDrawer();
+  showAuth();
+}
+$('logout-btn').addEventListener('click', doLogout);
+$('drawer-logout').addEventListener('click', doLogout);
+
+$('avatar-btn').addEventListener('click', (e) => {
+  e.stopPropagation();
+  $('avatar-dropdown').classList.toggle('hidden');
+});
+document.addEventListener('click', (e) => {
+  if(!$('avatar-dropdown').contains(e.target) && e.target !== $('avatar-btn')){
+    $('avatar-dropdown').classList.add('hidden');
+  }
+});
+
+// ===================== EVENTOS: DRAWER =====================
+$('hamburger-btn').addEventListener('click', openDrawer);
+$('sidebar-overlay').addEventListener('click', closeDrawer);
+$('drawer-close').addEventListener('click', closeDrawer);
+document.querySelectorAll('.drawer-link[data-close]').forEach(a => {
+  a.addEventListener('click', closeDrawer);
+});
+$('drawer-gerenciamento').addEventListener('click', () => { closeDrawer(); openManageModal(); });
+$('drawer-change-img').addEventListener('click', () => { $('header-img-input').click(); });
+$('drawer-restore-img').addEventListener('click', handleRestoreHeaderImage);
+$('header-img-input').addEventListener('change', handleHeaderImageChange);
+
+// ===================== EVENTOS: PENDÊNCIAS / MODAIS =====================
 $('btn-nova').addEventListener('click', () => openModal(null));
 $('modal-close').addEventListener('click', closeModal);
 $('modal-cancel').addEventListener('click', closeModal);
 $('modal').addEventListener('click', (e) => { if(e.target.id === 'modal') closeModal(); });
 
-$('f-dentista').addEventListener('change', async (e) => {
-  if(e.target.value === '__add__'){
-    const nome = prompt('Nome do novo dentista:');
-    if(nome && nome.trim()){
-      dentistas.push(nome.trim());
-      await saveDentistas();
-      populateSelectOptions();
-      $('f-dentista').value = nome.trim();
-    }else{
-      e.target.value = dentistas[0] || '';
+$('btn-manage').addEventListener('click', openManageModal);
+$('manage-close').addEventListener('click', closeManageModal);
+$('manage-modal').addEventListener('click', (e) => { if(e.target.id === 'manage-modal') closeManageModal(); });
+$('nav-gerenciamento').addEventListener('click', (e) => { e.preventDefault(); openManageModal(); });
+
+$('add-dentista').addEventListener('click', handleAddDentista);
+$('new-dentista').addEventListener('keydown', (e) => { if(e.key === 'Enter'){ e.preventDefault(); handleAddDentista(); } });
+$('add-categoria').addEventListener('click', handleAddCategoria);
+$('new-categoria').addEventListener('keydown', (e) => { if(e.key === 'Enter'){ e.preventDefault(); handleAddCategoria(); } });
+
+document.addEventListener('click', async (e) => {
+  const editBtn = e.target.closest('.edit-btn');
+  const delBtn = e.target.closest('.del-btn');
+  const removeDentistaBtn = e.target.closest('.remove-dentista');
+  const removeCategoriaBtn = e.target.closest('.remove-categoria');
+
+  if(editBtn){
+    const record = pendencias.find(p => p.id === editBtn.dataset.id);
+    if(record) openModal(record);
+  }
+  if(delBtn){
+    if(confirm('Tem certeza que deseja excluir esta pendência?')){
+      pendencias = pendencias.filter(p => p.id !== delBtn.dataset.id);
+      await savePendencias();
+      render();
     }
   }
+  if(removeDentistaBtn) await handleRemoveDentista(removeDentistaBtn.dataset.name);
+  if(removeCategoriaBtn) await handleRemoveCategoria(removeCategoriaBtn.dataset.name);
 });
 
 $('form').addEventListener('submit', async (e) => {
@@ -469,31 +1107,35 @@ $('form').addEventListener('submit', async (e) => {
   render();
 });
 
-document.addEventListener('click', async (e) => {
-  const editBtn = e.target.closest('.edit-btn');
-  const delBtn = e.target.closest('.del-btn');
-  if(editBtn){
-    const record = pendencias.find(p => p.id === editBtn.dataset.id);
-    if(record) openModal(record);
-  }
-  if(delBtn){
-    if(confirm('Tem certeza que deseja excluir esta pendência?')){
-      pendencias = pendencias.filter(p => p.id !== delBtn.dataset.id);
-      await savePendencias();
-      render();
-    }
-  }
-});
-
 ['search','filter-dentista','filter-categoria','filter-situacao'].forEach(id => {
   $(id).addEventListener('input', render);
   $(id).addEventListener('change', render);
 });
 
-(async function init(){
-  await loadData();
-  populateSelectOptions();
-  render();
+$('hero-search-btn').addEventListener('click', () => {
+  $('table-section').scrollIntoView({ behavior:'smooth', block:'start' });
+});
+
+document.querySelectorAll('#nav-links a').forEach(a => {
+  a.addEventListener('click', () => {
+    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+    a.classList.add('active');
+  });
+});
+
+// ===================== INICIALIZAÇÃO =====================
+(async function boot(){
+  await loadUsuarios();
+  const session = await getSession();
+  if(session){
+    const found = usuarios.find(u => u.usuario === session.usuario);
+    if(found){
+      currentUser = found;
+      await enterApp();
+      return;
+    }
+  }
+  showAuth();
 })();
 </script>
 
